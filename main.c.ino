@@ -1,25 +1,27 @@
 #include <SoftwareSerial.h>
 
-const byte rx_pin = 2;
-const byte tx_pin = 3;
-SoftwareSerial bluetooth_hc06(rx_pin, tx_pin);
-SoftwareSerial *hc06 = &bluetooth_hc06;
+//const byte rx_pin = 2;
+//const byte tx_pin = 3;
+//SoftwareSerial bluetooth_hc06(rx_pin, tx_pin);
+//SoftwareSerial *hc06 = &bluetooth_hc06;
 
 const int WorkingPin = 10;
+const int ResponcePin = 9;
 
 void setup() {
-  hc06->begin(9600);
-  pinMode(LED_BUILTIN, OUTPUT); // turn if off
+  Serial1.begin(9600);
+  pinMode(ResponcePin, OUTPUT); // turn if off
   pinMode(WorkingPin, OUTPUT);
 }
 
 void loop() {
-  if(hc06->available() > 0) {
-      const char cmd = hc06->read();
-      digitalWrite(LED_BUILTIN, HIGH);
-      delay(50);
-      digitalWrite(LED_BUILTIN, LOW);
-      delay(50);
+  int in_data = Serial1.read();
+  if(in_data >= 0) {
+      const char cmd = in_data;
+      digitalWrite(ResponcePin, HIGH);
+      delay(20);
+      digitalWrite(ResponcePin, LOW);
+      delay(20);
       if (cmd == '0') {
         digitalWrite(WorkingPin, LOW);
       }
